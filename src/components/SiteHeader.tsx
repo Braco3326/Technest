@@ -8,6 +8,7 @@ import { useAuth } from "@/lib/providers";
 
 const NAV = [
   { href: "/cours", label: "Cours" },
+  { href: "/tuteur", label: "Tuteur IA" },
   { href: "/annales", label: "Annales" },
   { href: "/a-propos", label: "Sources" },
 ];

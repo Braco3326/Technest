@@ -21,10 +21,13 @@ import type { ProgressStore } from "./progress/store";
 import { LocalProgressStore } from "./progress/store";
 import type { Certificate, CourseProgress } from "./progress/model";
 import { emptyCourseProgress } from "./progress/model";
+import type { AiTutor } from "./ai/types";
+import { ApiAiTutor } from "./ai/apiTutor";
 
-/* ---- the two swappable implementations (THE seam) ---- */
+/* ---- the three swappable implementations (THE seam) ---- */
 const authProvider: AuthProvider = new LocalAuthProvider();
 const progressStore: ProgressStore = new LocalProgressStore();
+const aiTutor: AiTutor = new ApiAiTutor();
 
 /* ---------------- Auth ---------------- */
 
@@ -115,6 +118,11 @@ export function useProgressStore() {
   const ctx = useContext(ProgressContext);
   if (!ctx) throw new Error("useProgressStore must be used within AppProviders");
   return ctx;
+}
+
+/** The AI tutor seam — components never talk to the API route directly. */
+export function useAiTutor(): AiTutor {
+  return aiTutor;
 }
 
 /** Load (and auto-reload after mutations) the progress of one course. */

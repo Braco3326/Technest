@@ -4,7 +4,7 @@ import { COURSES } from "@/data/courses";
 const BASE = "https://tech-nest-web-gamma.vercel.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const statics = ["", "/cours", "/annales", "/a-propos", "/inscription", "/connexion", "/verification"].map(
+  const statics = ["", "/cours", "/tuteur", "/annales", "/a-propos", "/inscription", "/connexion", "/verification"].map(
     (p) => ({
       url: `${BASE}${p}`,
       changeFrequency: "weekly" as const,

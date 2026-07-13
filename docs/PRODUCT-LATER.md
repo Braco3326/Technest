@@ -3,22 +3,30 @@
 This document names every seam deliberately left in the codebase so the mock
 platform becomes a real product **without touching pages or components**.
 
-## 1. The two swappable interfaces
+## 1. The three swappable interfaces
 
-Pages and components never talk to storage. They consume React hooks from
-`src/lib/providers.tsx`, which are backed by two interfaces:
+Pages and components never talk to storage or to the AI backend. They consume
+React hooks from `src/lib/providers.tsx`, which are backed by three interfaces:
 
-| Seam | Interface | Mock impl (today) | Real impl (later) |
+| Seam | Interface | Impl (today) | Real/alt impl (later) |
 |---|---|---|---|
 | Auth | `AuthProvider` — `src/lib/auth/types.ts` | `LocalAuthProvider` (localStorage) | e.g. `SupabaseAuthProvider` |
 | Progress & certificates | `ProgressStore` — `src/lib/progress/store.ts` | `LocalProgressStore` (localStorage) | e.g. `SupabaseProgressStore` |
+| AI tutor | `AiTutor` — `src/lib/ai/types.ts` | `ApiAiTutor` (→ `/api/tutor`, Claude API server-side) | e.g. an edge function, or a batched offline tutor |
 
-**The swap is two lines** in `src/lib/providers.tsx`:
+**The swap is three lines** in `src/lib/providers.tsx`:
 
 ```ts
 const authProvider: AuthProvider = new SupabaseAuthProvider();
 const progressStore: ProgressStore = new SupabaseProgressStore();
+const aiTutor: AiTutor = new EdgeAiTutor();
 ```
+
+The AI tutor's design decisions (corpus retrieval, socratic prompt contract,
+citation validation, model choice) are recorded in
+`docs/adr/0001-assistant-ia-tuteur.md`. Its retrieval module
+(`src/lib/ai/corpus.ts`) is the seam for scaling to embeddings when all
+courses open.
 
 Every method on both interfaces is already `async` (returns Promises), so a
 network-backed implementation changes no call sites and no rendering logic.
