@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { ANNALES } from "@/data/annales";
+import Link from "next/link";
+import { ANNALES, annaleSlug } from "@/data/annales";
 
 export const metadata: Metadata = {
   title: "Annales BTS Audiovisuel option Son — sujets officiels E3 PTES 2017-2025",
@@ -90,14 +91,22 @@ function Section({
                   )}
                 </td>
                 <td className="border-b border-line px-4 py-2.5">
-                  <a
-                    href={a.lien}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-medium text-cue underline-offset-4 hover:underline"
-                  >
-                    Ouvrir ↗
-                  </a>
+                  <span className="flex items-center gap-3">
+                    <Link
+                      href={`/annales/${annaleSlug(a)}`}
+                      className="font-medium text-ink-mute underline-offset-4 hover:text-ink hover:underline"
+                    >
+                      Fiche
+                    </Link>
+                    <a
+                      href={a.lien}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-cue underline-offset-4 hover:underline"
+                    >
+                      Ouvrir ↗
+                    </a>
+                  </span>
                 </td>
               </tr>
             ))}
