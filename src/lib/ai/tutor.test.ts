@@ -13,6 +13,7 @@
  */
 
 import { describe, expect, it } from "vitest";
+import { DEFAULT_MODELS, resolveProvider } from "./llm";
 import { buildCorpus, getPassage, retrieve } from "./corpus";
 import {
   buildContextBlock,
@@ -131,6 +132,41 @@ describe("citation validation", () => {
 
   it("handles replies without citations", () => {
     expect(extractCitations("Bonjour ! Sur quoi travaillez-vous ?")).toHaveLength(0);
+  });
+});
+
+describe("provider resolution (Claude / Gemini seam)", () => {
+  it("returns null when nothing is configured (route answers 501)", () => {
+    expect(resolveProvider({})).toBeNull();
+  });
+
+  it("prefers Anthropic when both keys are present", () => {
+    const r = resolveProvider({ ANTHROPIC_API_KEY: "a", GEMINI_API_KEY: "g" });
+    expect(r?.provider).toBe("anthropic");
+    expect(r?.model).toBe(DEFAULT_MODELS.anthropic);
+  });
+
+  it("falls back to Gemini when only its key is present", () => {
+    const r = resolveProvider({ GEMINI_API_KEY: "g" });
+    expect(r).toEqual({ provider: "gemini", apiKey: "g", model: DEFAULT_MODELS.gemini });
+  });
+
+  it("TUTOR_PROVIDER forces the provider", () => {
+    const r = resolveProvider({
+      TUTOR_PROVIDER: "gemini",
+      ANTHROPIC_API_KEY: "a",
+      GEMINI_API_KEY: "g",
+    });
+    expect(r?.provider).toBe("gemini");
+  });
+
+  it("a forced provider without its key yields null, not a silent fallback", () => {
+    expect(resolveProvider({ TUTOR_PROVIDER: "gemini", ANTHROPIC_API_KEY: "a" })).toBeNull();
+  });
+
+  it("TUTOR_MODEL overrides the default model of either provider", () => {
+    const r = resolveProvider({ GEMINI_API_KEY: "g", TUTOR_MODEL: "gemini-2.5-pro" });
+    expect(r?.model).toBe("gemini-2.5-pro");
   });
 });
 

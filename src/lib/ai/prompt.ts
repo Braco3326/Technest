@@ -10,9 +10,6 @@
 import type { Passage } from "./corpus";
 import type { TutorContext } from "./types";
 
-/** Server-side model choice; override with TUTOR_MODEL in the environment. */
-export const DEFAULT_TUTOR_MODEL = "claude-opus-4-8";
-
 export const CITATION_PATTERN = /\[source:\s*([^\]\s][^\]]*?)\s*\]/g;
 
 /**

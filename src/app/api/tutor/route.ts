@@ -6,14 +6,13 @@
  * Design decisions: docs/adr/0001-assistant-ia-tuteur.md
  */
 
-import Anthropic from "@anthropic-ai/sdk";
 import { buildCorpus, retrieve } from "@/lib/ai/corpus";
 import {
-  DEFAULT_TUTOR_MODEL,
   buildContextBlock,
   buildSystemPrompt,
   findInvalidCitations,
 } from "@/lib/ai/prompt";
+import { getTutorLlm } from "@/lib/ai/llm.factory";
 import type { TutorContext, TutorMessage } from "@/lib/ai/types";
 
 export const runtime = "nodejs";
@@ -32,12 +31,12 @@ function badRequest(message: string): Response {
 }
 
 export async function POST(req: Request): Promise<Response> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
+  const provider = getTutorLlm();
+  if (!provider) {
     return Response.json(
       {
         error:
-          "Le tuteur IA n'est pas configuré : la variable d'environnement ANTHROPIC_API_KEY est absente sur ce déploiement.",
+          "Le tuteur IA n'est pas configuré : définissez ANTHROPIC_API_KEY ou GEMINI_API_KEY dans les variables d'environnement du déploiement.",
       },
       { status: 501 }
     );
@@ -77,23 +76,13 @@ export async function POST(req: Request): Promise<Response> {
   const unitHint = body.context?.unitSlug?.replace(/-/g, " ") ?? "";
   const passages = retrieve(`${last.content} ${unitHint} ${weakSpotHint}`.trim(), 6);
 
-  const client = new Anthropic({ apiKey });
-  const model = process.env.TUTOR_MODEL ?? DEFAULT_TUTOR_MODEL;
-
-  const stream = client.messages.stream({
-    model,
-    max_tokens: 2048,
-    thinking: { type: "adaptive" },
-    output_config: { effort: "medium" },
+  const textStream = provider.llm.streamText({
     system: [
-      {
-        type: "text",
-        text: buildSystemPrompt(),
-        cache_control: { type: "ephemeral" },
-      },
-      { type: "text", text: buildContextBlock(passages, body.context) },
+      { text: buildSystemPrompt(), cacheable: true },
+      { text: buildContextBlock(passages, body.context) },
     ],
-    messages: body.messages.map((m) => ({ role: m.role, content: m.content })),
+    messages: body.messages,
+    maxTokens: 2048,
   });
 
   const encoder = new TextEncoder();
@@ -103,14 +92,9 @@ export async function POST(req: Request): Promise<Response> {
     async start(controller) {
       let fullText = "";
       try {
-        for await (const event of stream) {
-          if (
-            event.type === "content_block_delta" &&
-            event.delta.type === "text_delta"
-          ) {
-            fullText += event.delta.text;
-            controller.enqueue(encoder.encode(event.delta.text));
-          }
+        for await (const chunk of textStream) {
+          fullText += chunk;
+          controller.enqueue(encoder.encode(chunk));
         }
         // Guardrail: a citation that doesn't exist in the corpus is flagged
         // to the student rather than silently trusted.
@@ -130,7 +114,8 @@ export async function POST(req: Request): Promise<Response> {
       }
     },
     cancel() {
-      stream.abort();
+      // Stops consuming the provider stream (generator return).
+      void (textStream as AsyncGenerator<string>).return?.(undefined);
     },
   });
 

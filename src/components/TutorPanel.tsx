@@ -149,8 +149,9 @@ export function TutorPanel({ initialUnitSlug }: { initialUnitSlug?: string } = {
         <p className="font-mono text-xs uppercase tracking-wide text-amber">Tuteur IA — non configuré</p>
         <p className="mt-3 text-sm leading-relaxed text-ink-mute">{unavailable}</p>
         <p className="mt-2 text-sm leading-relaxed text-ink-faint">
-          L&apos;administrateur du site doit définir <code className="font-mono text-xs">ANTHROPIC_API_KEY</code> dans
-          les variables d&apos;environnement du déploiement.
+          L&apos;administrateur du site doit définir <code className="font-mono text-xs">ANTHROPIC_API_KEY</code> (Claude)
+          ou <code className="font-mono text-xs">GEMINI_API_KEY</code> (Gemini) dans les variables
+          d&apos;environnement du déploiement.
         </p>
       </div>
     );

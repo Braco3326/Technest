@@ -10,40 +10,36 @@
  */
 
 import { describe, expect, it } from "vitest";
-import Anthropic from "@anthropic-ai/sdk";
 import { buildCorpus, retrieve } from "./corpus";
 import {
-  DEFAULT_TUTOR_MODEL,
   buildContextBlock,
   buildSystemPrompt,
   extractCitations,
   findInvalidCitations,
 } from "./prompt";
+import { getTutorLlm } from "./llm.factory";
 
-const apiKey = process.env.ANTHROPIC_API_KEY;
-const model = process.env.TUTOR_MODEL ?? DEFAULT_TUTOR_MODEL;
+// Provider-agnostic: runs against whichever key is configured
+// (ANTHROPIC_API_KEY → Claude, GEMINI_API_KEY → Gemini, TUTOR_PROVIDER forces).
+const provider = getTutorLlm();
 
 async function askTutor(question: string): Promise<string> {
-  const client = new Anthropic({ apiKey });
   const passages = retrieve(question, 6);
-  const response = await client.messages.create({
-    model,
-    max_tokens: 1024,
-    thinking: { type: "adaptive" },
-    output_config: { effort: "medium" },
+  let text = "";
+  for await (const chunk of provider!.llm.streamText({
     system: [
-      { type: "text", text: buildSystemPrompt() },
-      { type: "text", text: buildContextBlock(passages) },
+      { text: buildSystemPrompt(), cacheable: true },
+      { text: buildContextBlock(passages) },
     ],
     messages: [{ role: "user", content: question }],
-  });
-  return response.content
-    .filter((b) => b.type === "text")
-    .map((b) => b.text)
-    .join("");
+    maxTokens: 1024,
+  })) {
+    text += chunk;
+  }
+  return text;
 }
 
-describe.skipIf(!apiKey)("tutor integration (live API)", () => {
+describe.skipIf(!provider)(`tutor integration (live API: ${provider?.resolved.provider ?? "none"})`, () => {
   it(
     "refuses to give the direct answer to an exam question and guides instead",
     { timeout: 120_000 },
