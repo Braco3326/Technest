@@ -139,8 +139,51 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ============ ANNALES TEASER ============ */}
+      {/* ============ TUTEUR IA ============ */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <div className="grid items-center gap-10 md:grid-cols-2">
+          <div className="order-2 md:order-1 rounded-md border border-line bg-surface p-5">
+            <p className="mb-3 font-mono text-xs uppercase tracking-wider text-ink-faint">
+              Aperçu — une conversation type
+            </p>
+            <div className="space-y-3 text-sm">
+              <div className="ml-8 rounded-md bg-raised px-3.5 py-2.5 leading-relaxed text-ink">
+                Donne-moi juste la réponse : 94 dB SPL à 1 m, quel niveau à 8 m ?
+              </div>
+              <div className="mr-8 rounded-md border border-line bg-bg px-3.5 py-2.5 leading-relaxed text-ink-mute">
+                Je ne vais pas vous donner la réponse — c&apos;est vous qui passez l&apos;épreuve.
+                Mais décomposons : de 1 m à 8 m, combien de doublements de distance ?
+                Et que fait chaque doublement au niveau, en champ libre ?{" "}
+                <span className="inline-block rounded-sm bg-cue-dim px-1.5 py-0.5 font-mono text-[10px] text-cue align-baseline">
+                  Cours E3 · Acoustique
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="order-1 md:order-2">
+            <p className="font-mono text-xs uppercase tracking-wide text-amber">Nouveau</p>
+            <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+              Un tuteur IA qui vous guide — sans tricher à votre place
+            </h2>
+            <p className="mt-3 leading-relaxed text-ink-mute">
+              Le tuteur de Tech Nest est socratique : il décompose les questions d&apos;annales,
+              génère des exercices ciblés et repère vos points faibles — mais il ne donne
+              jamais la réponse d&apos;une évaluation. Il ne répond que depuis le cours et le
+              référentiel officiel, et cite sa source à chaque affirmation.
+            </p>
+            <Link
+              href="/tuteur"
+              className="mt-6 inline-block rounded-sm border border-line-strong bg-surface px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-overlay"
+            >
+              Ouvrir le tuteur IA →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ ANNALES TEASER ============ */}
+      <section className="border-t border-line">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <div className="grid items-center gap-10 md:grid-cols-2">
           <div>
             <h2 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
@@ -173,6 +216,7 @@ export default function HomePage() {
               ))}
             </ul>
           </div>
+        </div>
         </div>
       </section>
     </>
