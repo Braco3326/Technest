@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { COURSES, getCourseBySlug } from "@/data/courses";
 import { LessonRenderer } from "@/components/LessonRenderer";
 import { LessonFooter } from "@/components/LessonFooter";
+import { JsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
 
 export function generateStaticParams() {
   return COURSES.flatMap((c) =>
@@ -39,6 +40,14 @@ export default async function LessonPage({
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Accueil", path: "/" },
+          { name: "Cours", path: "/cours" },
+          { name: course.shortTitle, path: `/cours/${course.slug}` },
+          { name: unit.title, path: `/cours/${course.slug}/unite/${unit.slug}` },
+        ])}
+      />
       <nav className="mb-8 font-mono text-xs text-ink-faint" aria-label="Fil d'Ariane">
         <Link href="/cours" className="hover:text-ink-mute">Cours</Link>
         <span className="mx-2">/</span>

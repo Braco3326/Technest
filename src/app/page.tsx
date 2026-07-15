@@ -3,6 +3,30 @@ import type { Metadata } from "next";
 import { COURSES } from "@/data/courses";
 import { TOTAL_COEFFICIENTS } from "@/data/referentiel";
 import { ANNALES } from "@/data/annales";
+import { JsonLd, faqJsonLd } from "@/components/JsonLd";
+
+const FAQ_ITEMS = [
+  {
+    question: "Quelles sont les épreuves du BTS Métiers de l'audiovisuel, option Métiers du son ?",
+    answer:
+      "Le règlement d'examen (arrêté du 4 juin 2013) compte 7 épreuves obligatoires pour un total de 17 coefficients : E1 Culture audiovisuelle et artistique (coef. 2), E2 Anglais (coef. 1), E3 Physique et technique des équipements et supports (coef. 4), E4 Techniques et mise en œuvre (coef. 4), E51 Projet à caractère industriel (coef. 4), E52 Environnement économique et juridique (coef. 1) et E6 Situation en milieu professionnel (coef. 1).",
+  },
+  {
+    question: "Où trouver les annales officielles de l'épreuve E3 PTES ?",
+    answer:
+      "Les sujets officiels de l'E3 PTES (la seule épreuve écrite spécifique Son dont les sujets sont publics) sont publiés par éduscol STI pour les sessions 2017 à 2025. Tech Nest les indexe tous dans sa bibliothèque d'annales avec des liens directs vers les documents officiels.",
+  },
+  {
+    question: "Comment réviser l'épreuve E3 PTES (coefficient 4) ?",
+    answer:
+      "L'E3 est un écrit de 6 heures (3h+3h) qui couvre l'acoustique, l'électricité du signal audio, les transducteurs, l'audionumérique, le traitement du signal et les chaînes d'équipements. Tech Nest propose un cours complet gratuit en 6 unités avec quiz, un examen blanc de type annales et un certificat de compétences.",
+  },
+  {
+    question: "Les cours Tech Nest sont-ils gratuits ?",
+    answer:
+      "Oui. Les cours sont gratuits et auto-rythmés : unités (leçon + quiz), enquête, puis examen final. Un score d'au moins 70 % délivre un certificat nominatif listant les compétences RNCP37196 démontrées, valable 3 ans et vérifiable par code.",
+  },
+];
 
 export const metadata: Metadata = {
   title: "Tech Nest — Réussir le BTS Audiovisuel option Son",
@@ -18,6 +42,7 @@ export default function HomePage() {
 
   return (
     <>
+      <JsonLd data={faqJsonLd(FAQ_ITEMS)} />
       {/* ============ HERO ============ */}
       <section className="tn-grid-texture relative overflow-hidden border-b border-line">
         <div
@@ -217,6 +242,31 @@ export default function HomePage() {
             </ul>
           </div>
         </div>
+        </div>
+      </section>
+
+      {/* ============ FAQ ============ */}
+      <section className="border-t border-line bg-surface">
+        <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
+          <h2 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+            Questions fréquentes
+          </h2>
+          <div className="mt-8 space-y-3">
+            {FAQ_ITEMS.map((item) => (
+              <details
+                key={item.question}
+                className="group rounded-md border border-line bg-bg p-5 open:border-line-strong"
+              >
+                <summary className="cursor-pointer list-none font-display text-base font-semibold text-ink marker:content-none [&::-webkit-details-marker]:hidden">
+                  <span className="mr-2 font-mono text-xs text-amber" aria-hidden="true">
+                    ?
+                  </span>
+                  {item.question}
+                </summary>
+                <p className="mt-3 text-sm leading-relaxed text-ink-mute">{item.answer}</p>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
     </>

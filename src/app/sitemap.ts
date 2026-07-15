@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { COURSES } from "@/data/courses";
+import { ANNALES, annaleSlug } from "@/data/annales";
 
-const BASE = "https://tech-nest-web-gamma.vercel.app";
+const BASE = "https://teknest.fr";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const statics = ["", "/cours", "/tuteur", "/annales", "/a-propos", "/inscription", "/connexion", "/verification"].map(
@@ -23,5 +24,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     }))
   );
-  return [...statics, ...courses, ...units];
+  const annales = ANNALES.map((a) => ({
+    url: `${BASE}/annales/${annaleSlug(a)}`,
+    changeFrequency: "yearly" as const,
+    priority: a.official ? 0.7 : 0.4,
+  }));
+  return [...statics, ...courses, ...units, ...annales];
 }

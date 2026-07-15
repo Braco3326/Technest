@@ -205,3 +205,25 @@ export const ANNALES: AnnaleEntry[] = [
     official: true,
   },
 ];
+
+/** URL-safe slug for one annale entry — stable and unique across the index. */
+export function annaleSlug(a: AnnaleEntry): string {
+  const base = `${a.epreuve} ${a.type} ${a.session}`
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  // Guard against theoretical duplicates by suffixing the index position.
+  const dupes = ANNALES.filter(
+    (x) => x.epreuve === a.epreuve && x.type === a.type && x.session === a.session
+  );
+  if (dupes.length > 1) {
+    return `${base}-${ANNALES.indexOf(a) + 1}`;
+  }
+  return base;
+}
+
+export function getAnnaleBySlug(slug: string): AnnaleEntry | undefined {
+  return ANNALES.find((a) => annaleSlug(a) === slug);
+}

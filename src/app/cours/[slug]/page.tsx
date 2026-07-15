@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { COURSES, getCourseBySlug } from "@/data/courses";
 import { getBloc, getEpreuve } from "@/data/referentiel";
 import { CourseOutline } from "@/components/CourseOutline";
+import { JsonLd, breadcrumbJsonLd, courseJsonLd } from "@/components/JsonLd";
 
 export function generateStaticParams() {
   return COURSES.map((c) => ({ slug: c.slug }));
@@ -35,6 +36,22 @@ export default async function CourseDetailPage({
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+      <JsonLd
+        data={courseJsonLd({
+          slug: course.slug,
+          title: course.title,
+          description: course.description,
+          epreuve: course.epreuve,
+          available: course.status === "available",
+        })}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Accueil", path: "/" },
+          { name: "Cours", path: "/cours" },
+          { name: course.shortTitle, path: `/cours/${course.slug}` },
+        ])}
+      />
       {/* référentiel header */}
       <header>
         <div className="flex flex-wrap items-center gap-2">
