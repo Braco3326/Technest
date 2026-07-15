@@ -3,7 +3,11 @@ import Link from "next/link";
 /** Tech Nest wordmark — a fader cap forming the "T", amber on charcoal. */
 export function Logo({ compact = false }: { compact?: boolean }) {
   return (
-    <Link href="/" className="flex items-center gap-2.5 group" aria-label="Tech Nest — accueil">
+    <Link
+      href="/"
+      className="flex items-center gap-2.5 group"
+      aria-label={compact ? "Tech Nest — accueil" : undefined}
+    >
       <svg
         width="28"
         height="28"

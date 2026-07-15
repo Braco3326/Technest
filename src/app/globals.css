@@ -18,7 +18,7 @@
   /* Ink */
   --tn-ink: #e9edf3;         /* primary text */
   --tn-ink-mute: #9aa4b2;    /* secondary text */
-  --tn-ink-faint: #626d7d;   /* tertiary, captions */
+  --tn-ink-faint: #7e8896;   /* tertiary, captions — ≥4.5:1 on surface (a11y) */
 
   /* Signal colors — semantics borrowed from metering */
   --tn-amber: #e8b04b;       /* brand accent — VU needle warm glow */

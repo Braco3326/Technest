@@ -1,7 +1,7 @@
-# Tech Nest — Design System
+﻿# Tech Nest â€” Design System
 
-Studio-grade, precise, dark. The visual language of professional audio hardware —
-console desks, metering, machined controls — not a consumer study app.
+Studio-grade, precise, dark. The visual language of professional audio hardware â€”
+console desks, metering, machined controls â€” not a consumer study app.
 **Single source of truth: the CSS custom properties in `src/app/globals.css`**
 (`:root` block + Tailwind v4 `@theme inline` mapping). Nothing else defines colors.
 
@@ -15,8 +15,8 @@ console desks, metering, machined controls — not a consumer study app.
    subtle elevation. No soft blobs, no glassmorphism.
 3. **Dark by default, print in light.** The app is a dark control room; the
    certificate is a physical document and renders as a light page (also for print).
-4. **Data wears mono.** Anything that is a value — coefficients, scores, dates,
-   codes, meta — is set in JetBrains Mono, small. Prose stays in Inter.
+4. **Data wears mono.** Anything that is a value â€” coefficients, scores, dates,
+   codes, meta â€” is set in JetBrains Mono, small. Prose stays in Inter.
 
 ## Tokens
 
@@ -35,7 +35,7 @@ console desks, metering, machined controls — not a consumer study app.
 |---|---|---|
 | `--tn-ink` | `#e9edf3` | primary text |
 | `--tn-ink-mute` | `#9aa4b2` | body/secondary |
-| `--tn-ink-faint` | `#626d7d` | captions, meta |
+| `--tn-ink-faint` | `#7e8896` | captions, meta (>= 4.5:1 sur surface - WCAG AA) |
 
 ### Color (signal)
 | Token | Value | Meaning |
@@ -45,7 +45,7 @@ console desks, metering, machined controls — not a consumer study app.
 | `--tn-clip` / `-dim` | `#f06a5d` | errors, fail, locked-by-error |
 | `--tn-cue` / `-dim` | `#5aa9f2` | links, info notes |
 
-Each signal color has a `-dim` rgba(≈12 %) for tinted backgrounds; text on a dim
+Each signal color has a `-dim` rgba(â‰ˆ12 %) for tinted backgrounds; text on a dim
 background uses the full-strength color.
 
 ### Typography
@@ -56,12 +56,12 @@ background uses the full-strength color.
 | Data & code | JetBrains Mono | `font-mono` |
 
 Loaded via `next/font/google` in `src/app/layout.tsx` as CSS variables.
-Scale in practice: h1 30–60 px bold tracking-tight · h2 20–30 px semibold ·
-body 14–16/1.65 · meta 11–12 mono.
+Scale in practice: h1 30â€“60 px bold tracking-tight Â· h2 20â€“30 px semibold Â·
+body 14â€“16/1.65 Â· meta 11â€“12 mono.
 
 ### Spacing & radii
 Tailwind default spacing scale. Containers: `max-w-6xl` (landing/catalog),
-`max-w-4xl` (course detail), `max-w-3xl` (lesson/exam — reading measure).
+`max-w-4xl` (course detail), `max-w-3xl` (lesson/exam â€” reading measure).
 Radii: `--tn-r-sm` 4 px (buttons, chips), `--tn-r-md` 8 px (cards), `--tn-r-lg` 12 px (hero panels).
 
 ### Motion
@@ -72,19 +72,20 @@ No parallax, no scroll-jacking.
 
 ## Recurring patterns
 
-- **Épreuve chip**: `font-mono text-amber bg-raised` chip with the code (E3…),
-  followed by faint mono meta (`coef. 4 · écrite · 6 h`). Used identically on
+- **Ã‰preuve chip**: `font-mono text-amber bg-raised` chip with the code (E3â€¦),
+  followed by faint mono meta (`coef. 4 Â· Ã©crite Â· 6 h`). Used identically on
   path, course header, certificate.
-- **Status ring**: circular step marker — amber ring/`E3` = available, green
-  ring/`✓` = done, dim ring/`🔒` = locked.
+- **Status ring**: circular step marker â€” amber ring/`E3` = available, green
+  ring/`âœ“` = done, dim ring/`ðŸ”’` = locked.
 - **Progress meter**: 1.5 px segmented bar (quiz) or continuous 1 px bar (course),
   green when passed, amber in progress, red segment = wrong answer.
 - **Note blocks** in lessons: left-border 2 px + dim background, label uppercase
-  mono — `Réflexe examen` (amber), `Attention` (red), `À savoir` (blue).
+  mono â€” `RÃ©flexe examen` (amber), `Attention` (red), `Ã€ savoir` (blue).
 - **Trust badge**: pill `officiel` (green dim) vs `tiers` (amber dim) on annales.
 
 ## Accessibility
 - Focus visible: 2 px amber outline (`:focus-visible` global).
 - All interactive rows are real links/buttons; quizzes are radio fieldsets.
-- Contrast: ink on bg ≈ 14:1; ink-mute on surface ≈ 7:1; amber on bg ≈ 8:1.
+- Contrast: ink on bg â‰ˆ 14:1; ink-mute on surface â‰ˆ 7:1; amber on bg â‰ˆ 8:1.
 - `aria-` roles on progress bars, alerts and status messages.
+
