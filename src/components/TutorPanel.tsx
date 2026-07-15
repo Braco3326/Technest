@@ -75,10 +75,14 @@ function ReplyText({ text }: { text: string }) {
   );
 }
 
-export function TutorPanel() {
+export function TutorPanel({ initialUnitSlug }: { initialUnitSlug?: string } = {}) {
   const tutor = useAiTutor();
   const { user } = useAuth();
   const e3 = useMemo(() => getCourseBySlug(E3_SLUG), []);
+  const initialUnit = useMemo(
+    () => (initialUnitSlug ? e3?.units.find((u) => u.slug === initialUnitSlug) : undefined),
+    [e3, initialUnitSlug]
+  );
   const { progress, ready } = useCourseProgress(e3?.id ?? "");
   const [messages, setMessages] = useState<TutorMessage[]>([]);
   const [draft, setDraft] = useState("");
@@ -114,7 +118,7 @@ export function TutorPanel() {
         let reply = "";
         for await (const chunk of tutor.streamReply(
           history,
-          { courseSlug: E3_SLUG, weakSpots },
+          { courseSlug: E3_SLUG, unitSlug: initialUnitSlug, weakSpots },
           controller.signal
         )) {
           reply += chunk;
@@ -136,7 +140,7 @@ export function TutorPanel() {
         abortRef.current = null;
       }
     },
-    [messages, streaming, tutor, weakSpots]
+    [messages, streaming, tutor, weakSpots, initialUnitSlug]
   );
 
   if (unavailable) {
@@ -175,6 +179,12 @@ export function TutorPanel() {
               Posez une question sur le cours E3/PTES : le tuteur vous guide sans donner la réponse toute
               faite, et cite ses sources. {!user && "Connectez-vous pour activer la détection de vos points faibles."}
             </p>
+            {initialUnit && (
+              <p className="inline-flex items-center gap-2 rounded-sm bg-raised px-3 py-1.5 font-mono text-[11px] text-ink-faint">
+                <span className="h-1.5 w-1.5 rounded-full bg-amber" aria-hidden="true" />
+                contexte : {initialUnit.title}
+              </p>
+            )}
             <div className="flex flex-wrap gap-2">
               {QUICK_ACTIONS.map((a) => (
                 <button

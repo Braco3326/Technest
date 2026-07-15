@@ -3,6 +3,12 @@
 **À relire par : un diplômé BTS Métiers du Son.**
 **Rédigé le 13 juillet 2026, par l'IA qui a construit le site.**
 
+> ✅ **RELU ET VALIDÉ le 15 juillet 2026** par le propriétaire du projet (diplômé
+> BTS Métiers du Son) : aucun point n'a nécessité de correction, y compris les
+> suspicions listées en section 2. Ce document est conservé comme trace de la
+> démarche de vérification ; toute nouvelle unité de cours devra passer par le
+> même processus avant publication.
+
 ## Comment lire ce document
 
 Chaque affirmation du cours E3 est citée avec sa localisation exacte (`fichier:ligne`).

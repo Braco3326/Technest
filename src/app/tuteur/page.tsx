@@ -7,7 +7,12 @@ export const metadata: Metadata = {
     "Le tuteur IA de Tech Nest : un assistant socratique ancré dans le cours E3/PTES et le référentiel officiel du BTS Métiers du Son. Il guide, il ne donne pas les réponses.",
 };
 
-export default function TuteurPage() {
+export default async function TuteurPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ unite?: string }>;
+}) {
+  const { unite } = await searchParams;
   return (
     <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-8 sm:px-6">
       <div className="mb-6">
@@ -19,7 +24,7 @@ export default function TuteurPage() {
           donne jamais la réponse d&apos;une question d&apos;évaluation — il vous y amène.
         </p>
       </div>
-      <TutorPanel />
+      <TutorPanel initialUnitSlug={unite} />
       <p className="mt-4 font-mono text-[11px] leading-relaxed text-ink-faint">
         Le tuteur peut se tromper : vérifiez les points importants dans le cours et les textes officiels.
         Vos échanges ne sont pas enregistrés côté serveur.

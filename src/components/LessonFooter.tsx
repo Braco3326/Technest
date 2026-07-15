@@ -33,24 +33,37 @@ export function LessonFooter({
   const passed = Boolean(progress.units[unitId]?.quizPassedAt);
 
   return (
-    <div className="mt-12 rounded-md border border-line bg-surface p-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h2 className="font-display text-lg font-semibold text-ink">
-            {passed ? "Quiz déjà validé ✓" : "Valider cette unité"}
-          </h2>
-          <p className="mt-1 text-sm text-ink-mute">
-            {passed
-              ? "Vous pouvez le repasser pour vous entraîner — votre meilleur score est conservé."
-              : `Quiz de ${quizLength} questions — ≥ 70 % pour valider l'unité.`}
-            {!user && " Connectez-vous pour enregistrer votre progression."}
-          </p>
+    <div className="mt-12 space-y-4">
+      <div className="rounded-md border border-line bg-surface p-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 className="font-display text-lg font-semibold text-ink">
+              {passed ? "Quiz déjà validé ✓" : "Valider cette unité"}
+            </h2>
+            <p className="mt-1 text-sm text-ink-mute">
+              {passed
+                ? "Vous pouvez le repasser pour vous entraîner — votre meilleur score est conservé."
+                : `Quiz de ${quizLength} questions — ≥ 70 % pour valider l'unité.`}
+              {!user && " Connectez-vous pour enregistrer votre progression."}
+            </p>
+          </div>
+          <Link
+            href={`/cours/${courseSlug}/unite/${unitSlug}/quiz`}
+            className="rounded-sm bg-amber px-5 py-2.5 text-sm font-semibold text-bg transition-colors hover:bg-amber-bright"
+          >
+            {passed ? "Repasser le quiz" : "Passer le quiz →"}
+          </Link>
         </div>
+      </div>
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-line bg-bg px-6 py-4">
+        <p className="text-sm text-ink-mute">
+          Une notion résiste ? Le tuteur IA vous guide sur cette unité — sans donner les réponses.
+        </p>
         <Link
-          href={`/cours/${courseSlug}/unite/${unitSlug}/quiz`}
-          className="rounded-sm bg-amber px-5 py-2.5 text-sm font-semibold text-bg transition-colors hover:bg-amber-bright"
+          href={`/tuteur?unite=${unitSlug}`}
+          className="rounded-sm border border-line-strong bg-surface px-4 py-2 font-mono text-xs text-ink transition-colors hover:bg-overlay"
         >
-          {passed ? "Repasser le quiz" : "Passer le quiz →"}
+          Demander au tuteur →
         </Link>
       </div>
     </div>

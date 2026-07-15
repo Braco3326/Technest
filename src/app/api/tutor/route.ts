@@ -74,7 +74,8 @@ export async function POST(req: Request): Promise<Response> {
   const weakSpotHint = (body.context?.weakSpots ?? [])
     .map((w) => w.unitTitle)
     .join(" ");
-  const passages = retrieve(`${last.content} ${weakSpotHint}`.trim(), 6);
+  const unitHint = body.context?.unitSlug?.replace(/-/g, " ") ?? "";
+  const passages = retrieve(`${last.content} ${unitHint} ${weakSpotHint}`.trim(), 6);
 
   const client = new Anthropic({ apiKey });
   const model = process.env.TUTOR_MODEL ?? DEFAULT_TUTOR_MODEL;
