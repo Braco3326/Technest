@@ -16,3 +16,6 @@ next-env.d.ts
 
 /screenshots
 lh-*.json
+
+# Documents personnels (jamais commit)
+/source
