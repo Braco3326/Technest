@@ -276,3 +276,24 @@ L'arithmétique des 24 questions a été revérifiée (juste). Points de fond à
 **🟢 Enfin :** le reste de l'inventaire section 3, en diagonale.
 
 **Comment corriger :** chaque affirmation vit dans un seul fichier de données (`src/data/courses/e3/*.ts`) — modifier le texte ne touche à rien d'autre. Signalez-moi les corrections, je les applique et je redéploie.
+
+---
+
+## 6. Brouillons des cours stubs (E1, E2, E52, E6) — ajouté le 16 juillet 2026, EN ATTENTE DE RELECTURE
+
+Des « programmes envisagés (brouillon) » sont désormais affichés sur les pages des
+cours en préparation, chaque point sourcé depuis les fichiers vérifiés (détail
+complet : `docs/drafts/plans-cours-stubs.md`, données : `src/data/courses/draftPlans.ts`).
+Ils sont marqués « brouillon — à valider par l'expert » dans l'UI et ne sont PAS
+présentés comme du contenu de cours. À valider :
+
+| Épreuve | Points à trancher par l'expert |
+|---|---|
+| E1 CAA | Programme détaillé (notions/œuvres/périodes) ; nature des « 2 situations » CCF ; attentes méthodologiques de l'écrit ; barème |
+| E2 Anglais | L'anglais technique audiovisuel est-il au programme ? (plausible, mais AUCUNE source ne le dit) ; niveau CECRL ; articulation avec EF1 facultative |
+| E52 EEJ | 🔴 Épreuve la moins documentée (champ notes vide) : programme éco-gestion réel ; déroulé de l'oral 15 min ; l'hypothèse « discipline Économie et gestion ↔ U52 » (similarité de nom uniquement) ; l'hypothèse « secteurs de la filière » |
+| E6 Milieu pro | Structure attendue du dossier de stage ; déroulé de l'oral 30 min ; rôle du tuteur ; l'hypothèse « BC04 ↔ E6 » (similarité de nom uniquement) |
+
+Deux entrées marquées « hypothèse à confirmer » sont visibles publiquement sur la
+page E52 — si vous préférez qu'aucune hypothèse n'apparaisse tant qu'elle n'est
+pas tranchée, dites-le et je les retire de l'UI (elles resteront en docs).

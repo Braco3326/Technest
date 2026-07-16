@@ -4,6 +4,7 @@ import { COURSES, getCourseBySlug } from "@/data/courses";
 import { getBloc, getEpreuve } from "@/data/referentiel";
 import { CourseOutline } from "@/components/CourseOutline";
 import { SimulatorEmbed } from "@/components/SimulatorEmbed";
+import { DRAFT_PLANS } from "@/data/courses/draftPlans";
 import { JsonLd, breadcrumbJsonLd, courseJsonLd } from "@/components/JsonLd";
 
 export function generateStaticParams() {
@@ -93,6 +94,51 @@ export default async function CourseDetailPage({
 
       {/* E4 seam: the Audio Simulator embeds here (graceful when offline) */}
       {course.id === "e4-tmo" && <SimulatorEmbed />}
+
+      {/* Stub courses: sourced draft plan, explicitly marked as such */}
+      {course.status === "stub" && DRAFT_PLANS[course.id] && (
+        <section className="mt-8 rounded-md border border-line bg-surface p-6">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-amber-dim px-2.5 py-0.5 font-mono text-[11px] text-amber-bright">
+              brouillon — à valider par l&apos;expert
+            </span>
+            <h2 className="font-display text-lg font-semibold text-ink">
+              Programme envisagé
+            </h2>
+          </div>
+          <p className="mt-2 text-sm leading-relaxed text-ink-mute">
+            {DRAFT_PLANS[course.id].intro} Chaque point est justifié par les sources officielles
+            indexées (règlement d&apos;examen, grille horaire, base documentaire) — rien d&apos;autre.
+          </p>
+          <ul className="mt-4 space-y-3">
+            {DRAFT_PLANS[course.id].themes.map((t) => (
+              <li key={t.title} className="rounded-sm border border-line bg-bg p-3.5">
+                <p className="text-sm text-ink">
+                  {t.title}
+                  {t.hypothesis && (
+                    <span className="ml-2 rounded-full bg-clip-dim px-2 py-0.5 font-mono text-[10px] text-clip align-middle">
+                      hypothèse à confirmer
+                    </span>
+                  )}
+                </p>
+                <p className="mt-1.5 font-mono text-[11px] leading-relaxed text-ink-faint">
+                  Source : {t.source}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-4 rounded-sm border border-line bg-bg p-3.5">
+            <p className="font-mono text-[11px] uppercase tracking-wider text-ink-faint">
+              Ce que les sources ne documentent pas encore
+            </p>
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink-mute">
+              {DRAFT_PLANS[course.id].gaps.map((g) => (
+                <li key={g}>{g}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* outline (client: progress + gating) */}
       <div className="mt-10">
