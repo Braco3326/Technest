@@ -49,3 +49,14 @@ they are all localized.
     build/test/deploy from there, and copy edited sources back. Source of truth
     remains `Documents\...\tech-nest-web`. Vercel builds remotely, so this only
     affects local builds.
+14. **Canonical SEO = `https://teknest.fr`** (nuit du 16 juillet, sur instruction
+    du propriétaire). Le DNS du domaine pointe encore vers Wix (page d'erreur) :
+    tant qu'il n'est pas raccordé à Vercel, les canonicals/sitemap référencent
+    un domaine pas encore servi — assumé, l'autorité SEO se consolidera dès le
+    raccordement. Le projet Vercel a été déplacé par le propriétaire dans la
+    team `teknest` (production : teknest.fr ; le simulateur vit dans
+    `teknest-simu`).
+15. **Nuit du 16 juillet — builds locaux impossibles** (OOM machine : RAM
+    saturée par d'autres applications). Gates locales = tsc + vitest ;
+    build faisant foi = CI Vercel (tous les commits de la nuit : Ready).
+    Scores Lighthouse « après » à re-mesurer dès que la machine le permet.

@@ -65,9 +65,17 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col">
         <JsonLd data={organizationJsonLd()} />
         <JsonLd data={webSiteJsonLd()} />
+        <a
+          href="#contenu"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-amber focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-bg"
+        >
+          Aller au contenu
+        </a>
         <AppProviders>
           <SiteHeader />
-          <main className="flex-1">{children}</main>
+          <main id="contenu" className="flex-1">
+            {children}
+          </main>
           <SiteFooter />
         </AppProviders>
       </body>

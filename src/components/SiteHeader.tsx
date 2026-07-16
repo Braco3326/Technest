@@ -29,6 +29,7 @@ export function SiteHeader() {
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={active ? "page" : undefined}
                 className={`rounded-sm px-3 py-1.5 text-sm transition-colors ${
                   active
                     ? "bg-amber-dim text-amber-bright"
