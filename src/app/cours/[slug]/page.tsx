@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { COURSES, getCourseBySlug } from "@/data/courses";
 import { getBloc, getEpreuve } from "@/data/referentiel";
 import { CourseOutline } from "@/components/CourseOutline";
+import { SimulatorEmbed } from "@/components/SimulatorEmbed";
 import { JsonLd, breadcrumbJsonLd, courseJsonLd } from "@/components/JsonLd";
 
 export function generateStaticParams() {
@@ -89,6 +90,9 @@ export default async function CourseDetailPage({
           </ul>
         </div>
       </header>
+
+      {/* E4 seam: the Audio Simulator embeds here (graceful when offline) */}
+      {course.id === "e4-tmo" && <SimulatorEmbed />}
 
       {/* outline (client: progress + gating) */}
       <div className="mt-10">
